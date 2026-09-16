@@ -1,0 +1,20 @@
+[graph]
+all-features = true
+
+[advisories]
+unmaintained = "workspace"
+git-fetch-with-cli = true
+
+[bans]
+
+[licenses]
+allow = [
+  "BSD-2-Clause",
+  "MIT",
+]
+exceptions = [
+  { name = "unicode-ident", allow = ["Unicode-3.0"] },
+]
+private = { ignore = true }
+
+[sources]

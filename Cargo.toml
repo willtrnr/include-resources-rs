@@ -1,0 +1,28 @@
+[workspace]
+members = ["include-resources"]
+resolver = "3"
+
+[workspace.package]
+version = "0.1.0"
+authors = ["github.com/willtrnr"]
+edition = "2024"
+rust-version = "1.88"
+repository = "https://github.com/willtrnr/include-resources-rs"
+license = "MIT"
+publish = false
+
+[workspace.dependencies]
+include-resources = { path = "include-resources" }
+
+inflector = { package = "Inflector", version = "0.11" }
+prettyplease = { version = "0.3" }
+proc-macro2 = { version = "1.0", default-features = false }
+quote = { version = "1.0", default-features = false }
+read-fonts = { version = "0.44", default-features = false, features = ["std"] }
+syn = { version = "3.0", default-features = false }
+
+[profile.dev.build-override]
+opt-level = 2
+debug = false
+incremental = false
+codegen-units = 1
