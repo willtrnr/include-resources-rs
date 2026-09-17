@@ -77,7 +77,7 @@ pub fn generate(config: &Config) -> io::Result<String> {
 
                 let data = quote! {
                     #[allow(unused)]
-                    pub(crate) const #ident_data: &[u8] = include_bytes!(#path_lit);
+                    pub const #ident_data: &[u8] = include_bytes!(#path_lit);
                 };
 
                 Some(
@@ -133,7 +133,7 @@ fn handle_img(config: &Config, res: Resource<'_>) -> proc_macro2::TokenStream {
 
     data.extend(quote! {
         #[allow(unused)]
-        pub(crate) const #ident: ::std::sync::LazyLock<::image::RgbaImage> =
+        pub static #ident: ::std::sync::LazyLock<::image::RgbaImage> =
             ::std::sync::LazyLock::new(|| {
                 ::image::load_from_memory_with_format(#ident_data, ::image::ImageFormat::#format)
                     .expect("valid image data")
@@ -146,7 +146,7 @@ fn handle_img(config: &Config, res: Resource<'_>) -> proc_macro2::TokenStream {
 
         data.extend(quote! {
             #[allow(unused)]
-            pub(crate) const #ident_handle: ::std::sync::LazyLock<::iced::advanced::image::Handle> =
+            pub static #ident_handle: ::std::sync::LazyLock<::iced::advanced::image::Handle> =
                 ::std::sync::LazyLock::new(|| {
                     let img = &*#ident;
                     let (width, height) = image::GenericImageView::dimensions(img);
@@ -200,7 +200,7 @@ fn handle_font(config: &Config, res: Resource<'_>) -> proc_macro2::TokenStream {
             let name_lit = Literal::string(res.name);
 
             data.extend(quote! {
-                pub(crate) mod #ident {
+                pub mod #ident {
                     #[allow(unused)]
                     pub fn font_source(size: f32) -> imgui::FontSource<'static> {
                         ::imgui::FontSource::TtfData {
@@ -242,7 +242,7 @@ fn handle_font(config: &Config, res: Resource<'_>) -> proc_macro2::TokenStream {
 
                         quote! {
                             #[allow(unused)]
-                            pub(crate) const #ident: ::iced::Font = ::iced::Font {
+                            pub const #ident: ::iced::Font = ::iced::Font {
                                 #(#subs)*
                                 ..::iced::Font::with_name(#family)
                             };
@@ -250,7 +250,7 @@ fn handle_font(config: &Config, res: Resource<'_>) -> proc_macro2::TokenStream {
                     } else {
                         quote! {
                             #[allow(unused)]
-                            pub(crate) const #ident: ::iced::Font = ::iced::Font::with_name(#family);
+                            pub const #ident: ::iced::Font = ::iced::Font::with_name(#family);
                         }
                     },
                 );
